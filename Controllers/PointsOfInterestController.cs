@@ -5,10 +5,11 @@ using Microsoft.AspNetCore.Mvc;
 namespace CityInfo.Controllers
 {
     [Route("api/cities/{cityId}/pointsofinterest")]// for the whole controller
-    [ApiController]
+    [ApiController]// very important 
     public class PointsOfInterestController : ControllerBase
     {
-       
+
+        [HttpGet]
         public ActionResult<IEnumerable<PointOfInterestDto>> GetPointsOfIntrest(int cityid)
         { 
             var city= CitiesDataStore.current.Cities.FirstOrDefault(c=> c.Id==cityid);
@@ -19,9 +20,11 @@ namespace CityInfo.Controllers
             }
             return Ok(city.PointsOfInterest);
         }
-        [HttpGet("{pointOfIntrestId}")]
-        public ActionResult<IEnumerable<PointOfInterestDto>> GetPoinOfIntrest(int cityId, int pointOfIntrestId) 
+
+        [HttpGet("{pointofintrestid}")]
+        public ActionResult<IEnumerable<PointOfInterestDto>> GetPoinOfIntrest(int cityId, int pointOfIntrestId)
         {
+            // Find the city id
             var city = CitiesDataStore.current.Cities.FirstOrDefault(c => c.Id == cityId);
             if (city == null)
             {
@@ -29,7 +32,7 @@ namespace CityInfo.Controllers
 
             }
             // Find pointOfIntrest
-            var pointOfIntrest = CitiesDataStore.current.Cities.FirstOrDefault(c => c.Id == pointOfIntrestId);
+            var pointOfIntrest = city.PointsOfInterest.FirstOrDefault(c => c.Id == pointOfIntrestId);
             if (pointOfIntrest == null)
             {
                 return NotFound();
